@@ -40,6 +40,7 @@ namespace TestTask.WEB.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] Restaurant restaurant)
         {
             if (restaurant == null)
@@ -50,9 +51,9 @@ namespace TestTask.WEB.Controllers
 
             var routeValue = new 
             { 
-                Id = restaurant.Id, 
-                Name = restaurant.Name, 
-                CityId = restaurant.CityId 
+                restaurant.Id, 
+                restaurant.Name, 
+                restaurant.CityId 
             };
 
             return CreatedAtRoute(routeValue, restaurant);

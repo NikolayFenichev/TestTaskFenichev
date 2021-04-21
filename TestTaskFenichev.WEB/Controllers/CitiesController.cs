@@ -19,6 +19,7 @@ namespace TestTask.WEB.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] City city)
         {
             if (city == null)
@@ -27,7 +28,7 @@ namespace TestTask.WEB.Controllers
             }
             await _unitOfWork.Cities.AddAsync(city);
 
-            var routeValue = new { Id = city.Id, Name = city.Name };
+            var routeValue = new { city.Id, city.Name };
 
             return CreatedAtRoute(routeValue, city);
         }
