@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using TestTask.DAL.Models;
@@ -38,6 +39,7 @@ namespace TestTask.WEB.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Create([FromBody] Restaurant restaurant)
         {
             if (restaurant == null)
@@ -46,7 +48,14 @@ namespace TestTask.WEB.Controllers
             }
             await _unitOfWork.Restaurants.AddAsync(restaurant);
 
-            return Ok(restaurant);
+            var routeValue = new 
+            { 
+                Id = restaurant.Id, 
+                Name = restaurant.Name, 
+                CityId = restaurant.CityId 
+            };
+
+            return CreatedAtRoute(routeValue, restaurant);
         }
     }
 }

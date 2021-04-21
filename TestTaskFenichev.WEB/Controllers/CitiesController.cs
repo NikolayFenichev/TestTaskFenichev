@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TestTask.DAL.Models;
 using TestTask.DAL.Repositories;
@@ -17,6 +18,7 @@ namespace TestTask.WEB.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Create([FromBody] City city)
         {
             if (city == null)
@@ -25,7 +27,9 @@ namespace TestTask.WEB.Controllers
             }
             await _unitOfWork.Cities.AddAsync(city);
 
-            return Ok(city);
+            var routeValue = new { Id = city.Id, Name = city.Name };
+
+            return CreatedAtRoute(routeValue, city);
         }
     }
 }
