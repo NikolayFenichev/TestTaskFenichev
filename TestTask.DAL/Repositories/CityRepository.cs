@@ -23,6 +23,11 @@ namespace TestTask.DAL.Repositories
         {
             var query = _db.Restaurants.Where(r => r.CityId == cityId);
 
+            if (!query.Any())
+            {
+                return null;
+            }
+
             return await PagedList<Restaurant>.ToPagedList(query, pageParameters.PageNumber, pageParameters.PageSize);
         }
     }

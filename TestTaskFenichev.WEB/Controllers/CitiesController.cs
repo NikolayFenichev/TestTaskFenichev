@@ -26,6 +26,7 @@ namespace TestTask.WEB.Controllers
             {
                 return BadRequest();
             }
+
             await _unitOfWork.Cities.AddAsync(city);
 
             var routeValue = new { city.Id, city.Name };

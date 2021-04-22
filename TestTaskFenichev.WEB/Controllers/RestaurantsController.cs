@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Linq;
 using System.Threading.Tasks;
 using TestTask.DAL.Models;
 using TestTask.DAL.Repositories;
@@ -19,9 +20,16 @@ namespace TestTask.WEB.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetRestaurantsByCity([FromQuery] PageParameters pageParameters, int cityId)
         {
             var restaurants = await _unitOfWork.Cities.GetRestaurantsByCityAsync(pageParameters, cityId);
+
+            if (restaurants == null)
+            {
+                return NotFound();
+            }
 
             var restaurantPageInfo = new
             {
@@ -47,6 +55,7 @@ namespace TestTask.WEB.Controllers
             {
                 return BadRequest();
             }
+
             await _unitOfWork.Restaurants.AddAsync(restaurant);
 
             var routeValue = new 

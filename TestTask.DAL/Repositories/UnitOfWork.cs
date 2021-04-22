@@ -5,8 +5,8 @@ namespace TestTask.DAL.Repositories
     public class UnitOfWork: IUnitOfWork
     {
         private RestaurantManagementContext _db;
-        private CityRepository _cityRepository;
-        private RestaurantRepository _restaurantRepository;
+        private ICityRepository _cityRepository;
+        private IRestaurantRepository _restaurantRepository;
 
         private bool disposed = false;
 
