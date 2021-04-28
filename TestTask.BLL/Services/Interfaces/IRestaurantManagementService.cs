@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using TestTask.BLL.Dto;
 using TestTask.Common;
-using TestTask.DAL.Models;
 
 namespace TestTask.BLL.Services.Interfaces
 {

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TestTask.BLL</name>
+    </assembly>
+    <members>
+        <member name="P:TestTask.BLL.Dto.CityDto.Name">
+            <summary>
+            Имя города
+            </summary>
+        </member>
+        <member name="P:TestTask.BLL.Dto.RestaurantDto.Name">
+            <summary>
+            Имя ресторана
+            </summary>
+        </member>
+        <member name="P:TestTask.BLL.Dto.RestaurantDto.CityId">
+            <summary>
+            Идентификатор города
+            </summary>
+        </member>
+    </members>
+</doc>

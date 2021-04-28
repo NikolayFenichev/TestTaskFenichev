@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.IO;
 using TestTask.BLL.Services;
 using TestTask.BLL.Services.Interfaces;
 using TestTask.DAL;
@@ -29,7 +30,15 @@ namespace TestTaskFenichev.WEB
                 options.UseSqlServer(Configuration.GetConnectionString("MsSqlConnection")));
 
             services.AddControllers();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                var filePath = Path.Combine(System.AppContext.BaseDirectory, "TestTask.WEB.xml");
+                c.IncludeXmlComments(filePath);
+                filePath = Path.Combine(System.AppContext.BaseDirectory, "TestTask.Common.xml");
+                c.IncludeXmlComments(filePath);
+                filePath = Path.Combine(System.AppContext.BaseDirectory, "TestTask.BLL.xml");
+                c.IncludeXmlComments(filePath);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

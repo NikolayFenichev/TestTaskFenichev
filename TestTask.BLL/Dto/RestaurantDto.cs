@@ -6,9 +6,15 @@ namespace TestTask.BLL.Dto
     {
         public int? Id { get; set; }
 
+        /// <summary>
+        /// Имя ресторана
+        /// </summary>
         [Required(ErrorMessage = "Не указано имя ресторана")]
         public string Name { get; set; }
 
+        /// <summary>
+        /// Идентификатор города
+        /// </summary>
         [Range(1, int.MaxValue, ErrorMessage = "Идентификартор города должен быть больше 0")]
         public int CityId { get; set; }
 

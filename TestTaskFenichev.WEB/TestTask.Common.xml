@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TestTask.Common</name>
+    </assembly>
+    <members>
+        <member name="P:TestTask.Common.PageParameters.PageNumber">
+            <summary>
+            Номер страницы
+            </summary>
+        </member>
+        <member name="P:TestTask.Common.PageParameters.PageSize">
+            <summary>
+            Размер страницы
+            </summary>
+        </member>
+    </members>
+</doc>

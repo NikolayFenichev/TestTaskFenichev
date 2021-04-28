@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TestTask.BLL.Dto
 {
@@ -9,6 +6,9 @@ namespace TestTask.BLL.Dto
     {
         public int Id { get; set; }
 
+        /// <summary>
+        /// Имя города
+        /// </summary>
         [Required(ErrorMessage = "Не указано имя города")]
         public string Name { get; set; }
 

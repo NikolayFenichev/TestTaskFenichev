@@ -8,8 +8,14 @@ namespace TestTask.Common
 
         private int _pageSize = 10;
 
+        /// <summary>
+        /// Номер страницы
+        /// </summary>
         public int PageNumber { get; set; } = 1;
 
+        /// <summary>
+        /// Размер страницы
+        /// </summary>
         public int PageSize
         {
             get => _pageSize;

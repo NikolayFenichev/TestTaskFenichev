@@ -1,7 +1,4 @@
-﻿
-using AutoMapper;
-using System;
-using System.Collections.Generic;
+﻿using AutoMapper;
 using System.Linq;
 using System.Threading.Tasks;
 using TestTask.BLL.Dto;

@@ -1,14 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using TestTask.BLL.Dto;
-using TestTask.BLL.Services;
 using TestTask.BLL.Services.Interfaces;
-using TestTask.DAL.Models;
-using TestTask.DAL.Repositories;
 using TestTask.WEB.Controllers;
 using Xunit;
 

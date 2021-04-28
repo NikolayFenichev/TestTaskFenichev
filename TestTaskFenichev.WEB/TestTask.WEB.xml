@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TestTask.WEB</name>
+    </assembly>
+    <members>
+        <member name="M:TestTask.WEB.Controllers.CitiesController.Create(TestTask.BLL.Dto.CityDto)">
+             <summary>
+             Добавляет город
+             </summary>
+             <remarks>
+             Пример запроса:
+            
+                 {
+                    "Name": "Чебоксары"
+                 }
+            
+             </remarks>
+             <response code="201">Город добавлен</response>
+             <response code="400">Неверная модель в параметре</response>
+        </member>
+        <member name="M:TestTask.WEB.Controllers.RestaurantsController.GetRestaurantsByCity(TestTask.Common.PageParameters,System.Int32)">
+             <summary>
+             Возвращает рестораны указанного города
+             </summary>
+             <remarks>
+             Пример запроса:
+            
+                 {
+                    "PageNumber": 1,
+                    "PageSize": 2,
+                    "cityId": 1
+                 }
+            
+             </remarks>
+             <param name="pageParameters">Параметры страницы</param>
+             <param name="cityId">Идентификатор города</param>
+             <response code="200">Рестораны найдены</response>
+             <response code="400">Неверный идентификатор города</response>
+             <response code="404">Рестораны не найдены</response>
+        </member>
+        <member name="M:TestTask.WEB.Controllers.RestaurantsController.Create(TestTask.BLL.Dto.RestaurantDto)">
+             <summary>
+             Добавляет ресторан в указанный город
+             </summary>
+             <remarks>
+             Пример запроса:
+            
+                 {
+                    "Name": "У Реки",
+                    "cityId": 1
+                 }
+            
+             </remarks>
+             <response code="201">Ресторан добавлен</response>
+             <response code="400">Неверная модель в параметре</response>
+        </member>
+    </members>
+</doc>
