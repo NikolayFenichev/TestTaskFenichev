@@ -14,8 +14,8 @@ namespace TestTask.Tests.Controller
         public async Task Create_AddCity_AddedCityReturned()
         {
             // Arrange
-            var newCity = new CityDto() { Name = CommonVariables.CityName };
-            var resultCity = new CityDto() { Id = 1, Name = CommonVariables.CityName };
+            var newCity = new CityDto() { Name = Common.CityName };
+            var resultCity = new CityDto() { Id = 1, Name = Common.CityName };
 
             var mock = new Mock<IRestaurantManagementService>();
             mock.Setup(rmService => rmService.AddCityAsync(It.IsAny<CityDto>()))

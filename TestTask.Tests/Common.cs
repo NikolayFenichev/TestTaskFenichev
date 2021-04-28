@@ -5,7 +5,7 @@ using TestTask.DAL.Models;
 
 namespace TestTask.Tests
 {
-    class CommonVariables
+    class Common
     {
         public const string CityName = "Хабаровск";
         public const string RestaurantName = "Ресторан";

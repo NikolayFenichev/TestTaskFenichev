@@ -16,8 +16,8 @@ namespace TestTask.Tests.Controller
         public async Task Create_AddRestaurant_AddedRestaurantReturned()
         {
             // Arrange
-            var newRestaurant = new RestaurantDto() { Name = CommonVariables.RestaurantName };
-            var resultRestaurant = new RestaurantDto() { Id = 1, Name = CommonVariables.RestaurantName };
+            var newRestaurant = new RestaurantDto() { Name = Common.RestaurantName };
+            var resultRestaurant = new RestaurantDto() { Id = 1, Name = Common.RestaurantName };
 
             var mock = new Mock<IRestaurantManagementService>();
             mock.Setup(rmService => rmService.AddRestaurantAsync(It.IsAny<RestaurantDto>()))
@@ -57,8 +57,8 @@ namespace TestTask.Tests.Controller
             // Arrange
             var newRestaurant = new RestaurantDto() 
             { 
-                Name = CommonVariables.RestaurantName, 
-                CityId = CommonVariables.BadCityId 
+                Name = Common.RestaurantName, 
+                CityId = Common.BadCityId 
             };
 
             var mock = new Mock<IRestaurantManagementService>();
@@ -79,12 +79,12 @@ namespace TestTask.Tests.Controller
             // Arrange
             var pageParameters = new PageParameters() 
             { 
-                PageNumber = CommonVariables.PageNumber, 
-                PageSize = CommonVariables.PageSize 
+                PageNumber = Common.PageNumber, 
+                PageSize = Common.PageSize 
             };
             var resultRestaurants = 
-                new PagedList<RestaurantDto>(new CommonVariables().RestaurantsDto, CommonVariables.TotalCount, 
-                    CommonVariables.PageNumber, CommonVariables.PageSize);
+                new PagedList<RestaurantDto>(new Common().RestaurantsDto, Common.TotalCount, 
+                    Common.PageNumber, Common.PageSize);
 
             var mock = new Mock<IRestaurantManagementService>();
             mock.Setup(rmService => 
@@ -107,7 +107,7 @@ namespace TestTask.Tests.Controller
             };
 
             // Act
-            var result = await controller.GetRestaurantsByCity(pageParameters, CommonVariables.CityId);
+            var result = await controller.GetRestaurantsByCity(pageParameters, Common.CityId);
 
             // Assert
             var actionResult = Assert.IsType<OkObjectResult>(result);
@@ -120,8 +120,8 @@ namespace TestTask.Tests.Controller
             // Arrange
             var pageParameters = new PageParameters()
             {
-                PageNumber = CommonVariables.PageNumber,
-                PageSize = CommonVariables.PageSize
+                PageNumber = Common.PageNumber,
+                PageSize = Common.PageSize
             };
 
             var mock = new Mock<IRestaurantManagementService>();
@@ -129,7 +129,7 @@ namespace TestTask.Tests.Controller
             var controller = new RestaurantsController(mock.Object);
 
             // Act
-            var result = await controller.GetRestaurantsByCity(pageParameters, CommonVariables.BadCityId);
+            var result = await controller.GetRestaurantsByCity(pageParameters, Common.BadCityId);
 
             // Assert
             Assert.Equal(typeof(BadRequestObjectResult), result.GetType());

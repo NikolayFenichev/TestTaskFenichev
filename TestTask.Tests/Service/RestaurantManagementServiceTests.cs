@@ -15,9 +15,9 @@ namespace TestTask.Tests.Service
         public async Task AddCityAsync_AddCity_AddedCityReturned()
         {
             // Arrange
-            var newCityDto = new CityDto() { Name = CommonVariables.CityName };
-            var resultCityDto = new CityDto() { Id = 1, Name = CommonVariables.CityName };
-            var resultCity = new City() { Id = 1, Name = CommonVariables.CityName };
+            var newCityDto = new CityDto() { Name = Common.CityName };
+            var resultCityDto = new CityDto() { Id = 1, Name = Common.CityName };
+            var resultCity = new City() { Id = 1, Name = Common.CityName };
 
             var mockUow = new Mock<IUnitOfWork>();
             var mockRepo = new Mock<ICityRepository>();
@@ -41,11 +41,11 @@ namespace TestTask.Tests.Service
         {
             // Arrange
             var newRestaurantDto = 
-                new RestaurantDto() { Name = CommonVariables.RestaurantName, CityId = CommonVariables.CityId };
+                new RestaurantDto() { Name = Common.RestaurantName, CityId = Common.CityId };
             var resultRestaurantDto = 
-                new RestaurantDto() { Id = 1, Name = CommonVariables.RestaurantName, CityId = CommonVariables.CityId };
+                new RestaurantDto() { Id = 1, Name = Common.RestaurantName, CityId = Common.CityId };
             var resultRestaurant = 
-                new Restaurant() { Id = 1, Name = CommonVariables.RestaurantName, CityId = CommonVariables.CityId };
+                new Restaurant() { Id = 1, Name = Common.RestaurantName, CityId = Common.CityId };
 
             var mockUow = new Mock<IUnitOfWork>();
             var mockRepo = new Mock<IRestaurantRepository>();
@@ -70,11 +70,11 @@ namespace TestTask.Tests.Service
             // Arrange
             var pageParameters = new PageParameters()
             {
-                PageNumber = CommonVariables.PageNumber,
-                PageSize = CommonVariables.PageSize
+                PageNumber = Common.PageNumber,
+                PageSize = Common.PageSize
             };
 
-            var commonVariables = new CommonVariables();
+            var commonVariables = new Common();
             var resultRestaurants = commonVariables.Restaurants;
             var resultRestaurantsDto = commonVariables.RestaurantsDto;
 
@@ -82,7 +82,7 @@ namespace TestTask.Tests.Service
             var mockRepo = new Mock<IRestaurantRepository>();
 
             mockRepo.Setup(cityRepo => 
-                cityRepo.GetRestaurantsByCityAsync(It.IsAny<PageParameters>(), CommonVariables.CityId))
+                cityRepo.GetRestaurantsByCityAsync(It.IsAny<PageParameters>(), Common.CityId))
                 .Returns(Task.FromResult(resultRestaurants));
             mockUow.Setup(rmService => rmService.Restaurants)
                 .Returns(mockRepo.Object);
@@ -90,7 +90,7 @@ namespace TestTask.Tests.Service
             var svc = new RestaurantManagementService(mockUow.Object);
 
             // Act
-            var result = await svc.GetRestaurantsByCityAsync(pageParameters, CommonVariables.CityId);
+            var result = await svc.GetRestaurantsByCityAsync(pageParameters, Common.CityId);
 
             // Assert
             Assert.Equal(resultRestaurantsDto, result);
