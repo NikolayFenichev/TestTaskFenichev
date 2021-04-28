@@ -4,6 +4,6 @@ namespace TestTask.DAL.Repositories
 {
     public interface IBaseRepository<TEntity> where TEntity: class, new () 
     {
-        Task AddAsync(TEntity entity);
+        Task<TEntity> AddAsync(TEntity entity);
     }
 }

@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
-using TestTask.DAL.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
+using TestTask.DAL.Models;
 
 namespace TestTask.DAL.Repositories
 {
@@ -13,22 +14,17 @@ namespace TestTask.DAL.Repositories
             _db = db;
         }
 
-        public async Task AddAsync(City entity)
+        public async Task<City> GetByIdAsync(int id)
         {
-            _db.Cyties.Add(entity);
-            await _db.SaveChangesAsync();
+            return await _db.Cities.FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<PagedList<Restaurant>> GetRestaurantsByCityAsync(PageParameters pageParameters, int cityId)
+        public async Task<City> AddAsync(City city)
         {
-            var query = _db.Restaurants.Where(r => r.CityId == cityId);
+            var result = _db.Cities.Add(city);
+            await _db.SaveChangesAsync();
 
-            if (!query.Any())
-            {
-                return null;
-            }
-
-            return await PagedList<Restaurant>.ToPagedList(query, pageParameters.PageNumber, pageParameters.PageSize);
+            return result.Entity;
         }
     }
 }

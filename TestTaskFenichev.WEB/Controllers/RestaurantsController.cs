@@ -1,22 +1,23 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Linq;
+using System;
 using System.Threading.Tasks;
-using TestTask.DAL.Models;
-using TestTask.DAL.Repositories;
+using TestTask.BLL.Dto;
+using TestTask.BLL.Services.Interfaces;
+using TestTask.Common;
 
 namespace TestTask.WEB.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class RestaurantsController : ControllerBase
     {
-        private IUnitOfWork _unitOfWork;
+        private IRestaurantManagementService _restaurantManagementService;
 
-        public RestaurantsController(IUnitOfWork unitOfWork)
+        public RestaurantsController(IRestaurantManagementService service)
         {
-            _unitOfWork = unitOfWork;
+            _restaurantManagementService = service;
         }
 
         [HttpGet]
@@ -24,12 +25,11 @@ namespace TestTask.WEB.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetRestaurantsByCity([FromQuery] PageParameters pageParameters, int cityId)
         {
-            var restaurants = await _unitOfWork.Cities.GetRestaurantsByCityAsync(pageParameters, cityId);
-
-            if (restaurants == null)
+            if (cityId < 1)
             {
-                return NotFound();
+                return BadRequest("Идентификартор города должен быть больше 0");
             }
+            var restaurants = await _restaurantManagementService.GetRestaurantsByCityAsync(pageParameters, cityId);
 
             var restaurantPageInfo = new
             {
@@ -41,7 +41,7 @@ namespace TestTask.WEB.Controllers
                 restaurants.HasPrevious
             };
 
-            Response.Headers.Add("Pagination", JsonConvert.SerializeObject(restaurantPageInfo));
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(restaurantPageInfo));
 
             return Ok(restaurants);
         }
@@ -49,20 +49,18 @@ namespace TestTask.WEB.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create([FromBody] Restaurant restaurant)
+        public async Task<IActionResult> Create([FromBody] RestaurantDto restaurant)
         {
-            if (restaurant == null)
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            restaurant = await _restaurantManagementService.AddRestaurantAsync(restaurant);
+
+            var routeValue = new
             {
-                return BadRequest();
-            }
-
-            await _unitOfWork.Restaurants.AddAsync(restaurant);
-
-            var routeValue = new 
-            { 
-                restaurant.Id, 
-                restaurant.Name, 
-                restaurant.CityId 
+                restaurant.Id,
+                restaurant.Name,
+                restaurant.CityId
             };
 
             return CreatedAtRoute(routeValue, restaurant);

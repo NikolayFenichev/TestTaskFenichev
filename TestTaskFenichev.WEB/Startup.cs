@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TestTask.BLL.Services;
+using TestTask.BLL.Services.Interfaces;
+using TestTask.DAL;
 using TestTask.DAL.Repositories;
 
 namespace TestTaskFenichev.WEB
@@ -19,7 +23,11 @@ namespace TestTaskFenichev.WEB
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IRestaurantManagementService, RestaurantManagementService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddDbContext<RestaurantManagementContext>(options => 
+                options.UseSqlServer(Configuration.GetConnectionString("MsSqlConnection")));
+
             services.AddControllers();
             services.AddSwaggerGen();
         }

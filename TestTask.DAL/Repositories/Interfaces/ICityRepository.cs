@@ -5,6 +5,6 @@ namespace TestTask.DAL.Repositories
 {
     public interface ICityRepository: IBaseRepository<City>
     {
-        Task<PagedList<Restaurant>> GetRestaurantsByCityAsync(PageParameters pageParameters, int cityId);
+        Task<City> GetByIdAsync(int id);
     }
 }

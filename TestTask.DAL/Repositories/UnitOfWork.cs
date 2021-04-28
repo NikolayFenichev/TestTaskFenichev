@@ -32,9 +32,9 @@ namespace TestTask.DAL.Repositories
             }
         }
 
-        public UnitOfWork()
+        public UnitOfWork(RestaurantManagementContext db)
         {
-            _db = new RestaurantManagementContext();
+            _db = db;
         }
 
         public void Dispose(bool disposing)

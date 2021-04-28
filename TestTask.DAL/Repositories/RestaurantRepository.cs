@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using TestTask.Common;
 using TestTask.DAL.Models;
 
 namespace TestTask.DAL.Repositories
@@ -12,10 +14,19 @@ namespace TestTask.DAL.Repositories
             _db = db;
         }
 
-        public async Task AddAsync(Restaurant entity)
+        public async Task<Restaurant> AddAsync(Restaurant restaurant)
         {
-            _db.Restaurants.Add(entity);
+            var result = _db.Restaurants.Add(restaurant);
             await _db.SaveChangesAsync();
+
+            return result.Entity;
+        }
+
+        public async Task<PagedList<Restaurant>> GetRestaurantsByCityAsync(PageParameters pageParameters, int cityId)
+        {
+            var query = _db.Restaurants.Where(r => r.CityId == cityId);
+
+            return await PagedListExtention<Restaurant>.ToPagedList(query, pageParameters.PageNumber, pageParameters.PageSize);
         }
     }
 }

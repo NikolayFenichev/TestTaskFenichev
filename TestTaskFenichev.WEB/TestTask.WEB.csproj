@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TestTask.DAL\TestTask.DAL.csproj" />
+    <ProjectReference Include="..\TestTask.BLL\TestTask.BLL.csproj" />
   </ItemGroup>
 
 
