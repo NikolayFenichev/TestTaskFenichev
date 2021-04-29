@@ -16,6 +16,7 @@ namespace TestTaskFenichev.WEB
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
+                    logging.AddDebug();
                     logging.AddConsole();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
