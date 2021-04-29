@@ -7,6 +7,7 @@ using TestTask.WEB.Controllers;
 using TestTask.Common;
 using Xunit;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace TestTask.Tests.Controller
 {
@@ -23,7 +24,9 @@ namespace TestTask.Tests.Controller
             mock.Setup(rmService => rmService.AddRestaurantAsync(It.IsAny<RestaurantDto>()))
                 .Returns(Task.FromResult(resultRestaurant));
 
-            var controller = new RestaurantsController(mock.Object);
+            var loggerMock = new Mock<ILogger<RestaurantsController>>();
+
+            var controller = new RestaurantsController(mock.Object, loggerMock.Object);
 
             // Act
             var result = await controller.Create(newRestaurant);
@@ -40,8 +43,9 @@ namespace TestTask.Tests.Controller
             var newRestaurant = new RestaurantDto() { Name = null };
 
             var mock = new Mock<IRestaurantManagementService>();
+            var loggerMock = new Mock<ILogger<RestaurantsController>>();
 
-            var controller = new RestaurantsController(mock.Object);
+            var controller = new RestaurantsController(mock.Object, loggerMock.Object);
             controller.ModelState.AddModelError("Name", "Required");
 
             // Act
@@ -62,8 +66,9 @@ namespace TestTask.Tests.Controller
             };
 
             var mock = new Mock<IRestaurantManagementService>();
+            var loggerMock = new Mock<ILogger<RestaurantsController>>();
 
-            var controller = new RestaurantsController(mock.Object);
+            var controller = new RestaurantsController(mock.Object, loggerMock.Object);
             controller.ModelState.AddModelError("CityId", "MustMoreZero");
 
             // Act
@@ -91,6 +96,8 @@ namespace TestTask.Tests.Controller
                 rmService.GetRestaurantsByCityAsync(It.IsAny<PageParameters>(), It.IsAny<int>()))
                 .Returns(Task.FromResult(resultRestaurants));
 
+            var loggerMock = new Mock<ILogger<RestaurantsController>>();
+
             var response = new Mock<HttpResponse>();
 
             var httpContext = new DefaultHttpContext();
@@ -101,7 +108,7 @@ namespace TestTask.Tests.Controller
                 HttpContext = httpContext,
             };
 
-            var controller = new RestaurantsController(mock.Object)
+            var controller = new RestaurantsController(mock.Object, loggerMock.Object)
             {
                 ControllerContext = controllerContext,
             };
@@ -125,8 +132,9 @@ namespace TestTask.Tests.Controller
             };
 
             var mock = new Mock<IRestaurantManagementService>();
+            var loggerMock = new Mock<ILogger<RestaurantsController>>();
 
-            var controller = new RestaurantsController(mock.Object);
+            var controller = new RestaurantsController(mock.Object, loggerMock.Object);
 
             // Act
             var result = await controller.GetRestaurantsByCity(pageParameters, Common.BadCityId);

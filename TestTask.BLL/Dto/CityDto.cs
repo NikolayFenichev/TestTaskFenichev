@@ -24,5 +24,10 @@ namespace TestTask.BLL.Dto
         {
             return Id.GetHashCode();
         }
+
+        public override string ToString()
+        {
+            return string.Format("Id = {0}, Name = {1}", Id, Name);
+        }
     }
 }

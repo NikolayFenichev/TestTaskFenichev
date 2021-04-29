@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using TestTask.BLL.Dto;
 using TestTask.BLL.Services.Interfaces;
 
@@ -11,10 +13,13 @@ namespace TestTask.WEB.Controllers
     public class CitiesController : ControllerBase
     {
         private IRestaurantManagementService _restaurantManagementService;
+        private readonly ILogger<CitiesController> _logger;
 
-        public CitiesController(IRestaurantManagementService service)
+        public CitiesController(IRestaurantManagementService service,
+            ILogger<CitiesController> logger)
         {
             _restaurantManagementService = service;
+            _logger = logger;
         }
 
         /// <summary>
@@ -35,16 +40,28 @@ namespace TestTask.WEB.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] CityDto city)
         {
-            if (ModelState.IsValid)
+            try
             {
-                city = await _restaurantManagementService.AddCityAsync(city);
+                if (ModelState.IsValid)
+                {
+                    city = await _restaurantManagementService.AddCityAsync(city);
 
-                var routeValue = new { city.Id, city.Name };
+                    var routeValue = new { city.Id, city.Name };
 
-                return CreatedAtRoute(routeValue, city);
+                    return CreatedAtRoute(routeValue, city);
+                }
+
+                var message = "Неверная модель в параметре";
+                _logger.LogError($"{nameof(Create)}:{city} - {message}");
+
+                return BadRequest(ModelState);
             }
-
-            return BadRequest(ModelState);
+            catch (Exception ex)
+            {
+                _logger.LogError($"{nameof(Create)}: {ex.Message}");
+                throw;
+            }
+            
         }
     }
 }

@@ -33,5 +33,10 @@ namespace TestTask.BLL.Dto
                 ^ Name.GetHashCode()
                 ^ CityId.GetHashCode();
         }
+
+        public override string ToString()
+        {
+            return string.Format("Id = {0}, Name = {1}, CityId = {2}", Id, Name, CityId);
+        }
     }
 }

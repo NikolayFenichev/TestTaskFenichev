@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System.Threading.Tasks;
 using TestTask.BLL.Dto;
@@ -21,7 +22,9 @@ namespace TestTask.Tests.Controller
             mock.Setup(rmService => rmService.AddCityAsync(It.IsAny<CityDto>()))
                 .Returns(Task.FromResult(resultCity));
 
-            var controller = new CitiesController(mock.Object);
+            var loggerMock = new Mock<ILogger<CitiesController>>();
+
+            var controller = new CitiesController(mock.Object, loggerMock.Object);
 
             // Act
             var result = await controller.Create(newCity);
@@ -38,8 +41,9 @@ namespace TestTask.Tests.Controller
             var newCity = new CityDto() { Name = null };
 
             var mock = new Mock<IRestaurantManagementService>();
+            var loggerMock = new Mock<ILogger<CitiesController>>();
 
-            var controller = new CitiesController(mock.Object);
+            var controller = new CitiesController(mock.Object, loggerMock.Object);
             controller.ModelState.AddModelError("Name", "Required");
 
             // Act

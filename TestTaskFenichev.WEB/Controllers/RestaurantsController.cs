@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TestTask.BLL.Dto;
@@ -14,10 +16,13 @@ namespace TestTask.WEB.Controllers
     public class RestaurantsController : ControllerBase
     {
         private IRestaurantManagementService _restaurantManagementService;
+        private readonly ILogger<RestaurantsController> _logger;
 
-        public RestaurantsController(IRestaurantManagementService service)
+        public RestaurantsController(IRestaurantManagementService service,
+            ILogger<RestaurantsController> logger)
         {
             _restaurantManagementService = service;
+            _logger = logger;
         }
 
         /// <summary>
@@ -45,28 +50,44 @@ namespace TestTask.WEB.Controllers
         {
             if (cityId < 1)
             {
-                return BadRequest("Идентификартор города должен быть больше 0");
-            }
-            var restaurants = await _restaurantManagementService.GetRestaurantsByCityAsync(pageParameters, cityId);
+                var message = "Идентификартор города должен быть больше 0";
+                _logger.LogError($"{nameof(GetRestaurantsByCity)}: {message}");
 
-            if (!restaurants.Any())
-            {
-                return NotFound();
+                return BadRequest(message);
             }
 
-            var restaurantPageInfo = new
+            try
             {
-                restaurants.TotalCount,
-                restaurants.PageSize,
-                restaurants.CurrentPage,
-                restaurants.TotalPages,
-                restaurants.HasNext,
-                restaurants.HasPrevious
-            };
+                var restaurants = await _restaurantManagementService.GetRestaurantsByCityAsync(pageParameters, cityId);
 
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(restaurantPageInfo));
+                if (!restaurants.Any())
+                {
+                    var message = "Рестораны не найдены";
+                    _logger.LogError($"{nameof(GetRestaurantsByCity)}: {message}");
 
-            return Ok(restaurants);
+                    return NotFound(message);
+                }
+
+                var restaurantPageInfo = new
+                {
+                    restaurants.TotalCount,
+                    restaurants.PageSize,
+                    restaurants.CurrentPage,
+                    restaurants.TotalPages,
+                    restaurants.HasNext,
+                    restaurants.HasPrevious
+                };
+
+                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(restaurantPageInfo));
+
+                return Ok(restaurants);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"{nameof(GetRestaurantsByCity)}: {ex.Message}");
+                throw;
+            }
+            
         }
 
         /// <summary>
@@ -89,18 +110,32 @@ namespace TestTask.WEB.Controllers
         public async Task<IActionResult> Create([FromBody] RestaurantDto restaurant)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            restaurant = await _restaurantManagementService.AddRestaurantAsync(restaurant);
-
-            var routeValue = new
             {
-                restaurant.Id,
-                restaurant.Name,
-                restaurant.CityId
-            };
+                var message = "Неверная модель в параметре";
+                _logger.LogError($"{nameof(Create)}:{restaurant} - {message}");
 
-            return CreatedAtRoute(routeValue, restaurant);
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                restaurant = await _restaurantManagementService.AddRestaurantAsync(restaurant);
+
+                var routeValue = new
+                {
+                    restaurant.Id,
+                    restaurant.Name,
+                    restaurant.CityId
+                };
+
+                return CreatedAtRoute(routeValue, restaurant);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{nameof(Create)}: {ex.Message}");
+                throw;
+            }
+            
         }
     }
 }
