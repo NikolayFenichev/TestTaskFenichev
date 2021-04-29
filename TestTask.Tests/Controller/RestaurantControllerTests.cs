@@ -8,6 +8,7 @@ using TestTask.Common;
 using Xunit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 
 namespace TestTask.Tests.Controller
 {
@@ -141,6 +142,48 @@ namespace TestTask.Tests.Controller
 
             // Assert
             Assert.Equal(typeof(BadRequestObjectResult), result.GetType());
+        }
+
+        [Fact]
+        public async Task GetRestaurantsByCity_RestaurantsMissing_NotFoundResponse()
+        {
+            // Arrange
+            var pageParameters = new PageParameters()
+            {
+                PageNumber = Common.PageNumber,
+                PageSize = Common.PageSize
+            };
+            var resultRestaurants =
+                new PagedList<RestaurantDto>(new List<RestaurantDto>(), Common.TotalCount,
+                    Common.PageNumber, Common.PageSize);
+
+            var mock = new Mock<IRestaurantManagementService>();
+            mock.Setup(rmService =>
+                rmService.GetRestaurantsByCityAsync(It.IsAny<PageParameters>(), It.IsAny<int>()))
+                .Returns(Task.FromResult(resultRestaurants));
+
+            var loggerMock = new Mock<ILogger<RestaurantsController>>();
+
+            var response = new Mock<HttpResponse>();
+
+            var httpContext = new DefaultHttpContext();
+            httpContext.Response.Headers.Add("X-Test-Header", "Test Header");
+
+            var controllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext,
+            };
+
+            var controller = new RestaurantsController(mock.Object, loggerMock.Object)
+            {
+                ControllerContext = controllerContext,
+            };
+
+            // Act
+            var result = await controller.GetRestaurantsByCity(pageParameters, Common.CityId);
+
+            // Assert
+            Assert.Equal(typeof(NotFoundObjectResult), result.GetType());
         }
     }
 }
