@@ -9,7 +9,7 @@ using TestTask.DAL;
 namespace TestTask.DAL.Migrations
 {
     [DbContext(typeof(RestaurantManagementContext))]
-    [Migration("20210429091907_CreateDb")]
+    [Migration("20210429095816_CreateDb")]
     partial class CreateDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
