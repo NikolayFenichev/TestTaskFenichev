@@ -52,16 +52,7 @@ namespace TestTaskFenichev.WEB
         {
             if (env.IsDevelopment())
             {
-                app.UseExceptionHandler(a => a.Run(async context =>
-                {
-                    var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
-                    var exception = exceptionHandlerPathFeature.Error;
-
-                    var result = JsonConvert.SerializeObject(new { error = exception.Message, 
-                        exception.StackTrace });
-                    context.Response.ContentType = "string/json";
-                    await context.Response.WriteAsync(result);
-                }));
+                app.UseDeveloperExceptionPage();
             }
 
             app.UseHttpsRedirection();
