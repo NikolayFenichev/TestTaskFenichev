@@ -23,4 +23,8 @@
     <ProjectReference Include="..\TestTask.Common\TestTask.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

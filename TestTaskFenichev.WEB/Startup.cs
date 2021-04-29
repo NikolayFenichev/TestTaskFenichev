@@ -31,6 +31,7 @@ namespace TestTaskFenichev.WEB
                 options.UseSqlServer(Configuration.GetConnectionString("MsSqlConnection")));
 
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 var filePath = Path.Combine(System.AppContext.BaseDirectory, "TestTask.WEB.xml");

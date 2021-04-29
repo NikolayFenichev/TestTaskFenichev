@@ -2,12 +2,12 @@
 
 namespace TestTask.DAL.Migrations
 {
-    public partial class StartMigration : Migration
+    public partial class CreateDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Cyties",
+                name: "Cities",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -16,7 +16,7 @@ namespace TestTask.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cyties", x => x.Id);
+                    table.PrimaryKey("PK_Cities", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -32,9 +32,9 @@ namespace TestTask.DAL.Migrations
                 {
                     table.PrimaryKey("PK_Restaurants", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Restaurants_Cyties_CityId",
+                        name: "FK_Restaurants_Cities_CityId",
                         column: x => x.CityId,
-                        principalTable: "Cyties",
+                        principalTable: "Cities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -51,7 +51,7 @@ namespace TestTask.DAL.Migrations
                 name: "Restaurants");
 
             migrationBuilder.DropTable(
-                name: "Cyties");
+                name: "Cities");
         }
     }
 }

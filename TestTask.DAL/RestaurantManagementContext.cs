@@ -5,16 +5,17 @@ namespace TestTask.DAL
 {
     public class RestaurantManagementContext: DbContext
     {
-        public RestaurantManagementContext()
-        {
+        private readonly DbContextOptions _options;
+        public DbSet<City> Cities { get; set; }
+        public DbSet<Restaurant> Restaurants { get; set; }
 
+        public RestaurantManagementContext(DbContextOptions options) : base(options)
+        {
+            _options = options;
         }
 
-        public RestaurantManagementContext(DbContextOptions options): base(options)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
         }
-
-        public virtual DbSet<City> Cities { get; set; }
-        public virtual DbSet<Restaurant> Restaurants { get; set; }
     }
 }
