@@ -13,7 +13,7 @@ namespace TestTaskFenichev.WEB
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureLogging((hostingContext, logging) =>
+                .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
                     logging.AddConsole();
