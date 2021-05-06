@@ -22,7 +22,8 @@ namespace TestTask.BLL.Dto
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode();
+            return Id.GetHashCode()
+                ^ Name.GetHashCode();
         }
 
         public override string ToString()

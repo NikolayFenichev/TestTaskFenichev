@@ -4,7 +4,7 @@ namespace TestTask.BLL.Dto
 {
     public class RestaurantDto
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Имя ресторана
